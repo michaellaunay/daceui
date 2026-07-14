@@ -1,4 +1,4 @@
-include *.txt *.ini *.cfg *.rst
+include *.txt *.ini *.cfg *.md
 recursive-include daceui *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mo *.mak *.mako *.js *.html *.xml
 include *.py
 include LICENSE

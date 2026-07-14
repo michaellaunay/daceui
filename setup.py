@@ -3,9 +3,9 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'README.rst')) as f:
+with open(os.path.join(here, 'README.md')) as f:
     README = f.read()
-with open(os.path.join(here, 'CHANGES.rst')) as f:
+with open(os.path.join(here, 'CHANGES.md')) as f:
     CHANGES = f.read()
 
 requires = [
@@ -23,9 +23,10 @@ setup(name='ecreall_daceui',
       version='1.0.5.dev0',
       description='This the reusable ui parts for DaCE.',
       long_description=README + '\n\n' + CHANGES,
+      long_description_content_type='text/markdown',
       classifiers=[
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.6",
         "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
@@ -33,8 +34,14 @@ setup(name='ecreall_daceui',
         ],
       author='Amen Souissi',
       author_email='amensouissi@ecreall.com',
-      url='https://github.com/ecreall/daceui/',
-      keywords='process',
+      maintainer='Michaël Launay (Logikascium)',
+      url='https://github.com/michaellaunay/daceui/',
+      project_urls={
+          'Source': 'https://github.com/michaellaunay/daceui',
+          'Tracker': 'https://github.com/michaellaunay/daceui/issues',
+          'Historical upstream': 'https://github.com/ecreall/daceui',
+      },
+      keywords='pyramid ui workflow dace substanced',
       license="AGPLv3+",
       packages=find_packages(),
       include_package_data=True,
