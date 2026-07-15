@@ -4,6 +4,11 @@
 # licence: AGPL
 # author: Amen Souissi
 
+"""daceui — the administration console of the dace engine, and the ajax
+action-panel service the host applications consume. The console's own
+screens are dace processes (see docs/en/architecture.md). ``main`` runs
+daceui standalone; ``includeme`` wires it into a host application.
+"""
 from pyramid.config import Configurator
 from pyramid.i18n import TranslationStringFactory
 
@@ -28,14 +33,17 @@ def main(global_config, **settings):
 
 
 def include(config): # pragma: no cover
+    """Inclusion split (historical): include the package."""
     config.include('.')
 
 
 def scan(config): # pragma: no cover
+    """Inclusion split (historical): scan the package."""
     config.scan('.')
 
 
 def includeme(config): # pragma: no cover
+    """Pyramid inclusion: scan the package and mount the static assets."""
     config.include(include)
     config.include(scan)
     config.add_static_view(

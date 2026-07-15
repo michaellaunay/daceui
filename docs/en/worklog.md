@@ -45,3 +45,24 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   PyCA bcrypt + hashlib backends, hash-compatible with the deployed module)
   is installed from its repository instead; `bcrypt`, `cffi` and `pycparser`
   pinned for the Python 3.6 target.
+
+
+## 2026-07-16
+
+- Phase 2 documentation of daceui, delivered in one pass (1,507 lines):
+  design document `architecture.md` (EN/FR) and `usage-scenarios.md`
+  (EN/FR), plus a full docstring pass — 86 docstrings from a complete
+  read, `tools/doc_coverage.py` added. Coverage: 1.0 % → 88.8 %
+  (6/6 modules, 36/36 classes, 45/56 functions; residue: constructors
+  and trivial overrides, per the stated policy).
+- Knowledge fixed in writing: daceui is the engine's administration
+  console *built as dace processes* (five `isUnique` definitions,
+  discriminator `DaceManager` — the engine manages itself with
+  itself); `DaceUIAPI` is the ajax action-panel service the host
+  applications consume (collect → render → execute the posted one →
+  **replay** the whole panel so it never shows a stale state); the
+  `request.ajax_api` override is how a host points the panel callbacks
+  at its own endpoint; virtual start actions are re-resolved from the
+  (pd, node, behavior) triple; a process without work-items counts as
+  *blocked* in the dashboards. The historical `action_infomrations`
+  spelling is kept and documented (renaming is a Phase-3 API change).

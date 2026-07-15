@@ -47,3 +47,27 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   backends bcrypt PyCA + hashlib, compatible hash pour hash avec le module
   deploye) est installee depuis son depot a la place ; `bcrypt`, `cffi` et
   `pycparser` epingles pour la cible Python 3.6.
+
+
+## 2026-07-16
+
+- Documentation de phase 2 de daceui, livrée en une passe
+  (1 507 lignes) : document de conception `architecture.md` (EN/FR) et
+  `usage-scenarios.md` (EN/FR), plus une passe de docstrings complète —
+  86 docstrings après lecture intégrale, `tools/doc_coverage.py`
+  ajouté. Couverture : 1,0 % → 88,8 % (6/6 modules, 36/36 classes,
+  45/56 fonctions ; résidu : constructeurs et surcharges triviales,
+  conformément à la politique annoncée).
+- Savoirs fixés par écrit : daceui est la console d'administration du
+  moteur *construite comme des processus dace* (cinq définitions
+  `isUnique`, discriminateur `DaceManager` — le moteur se gère avec
+  lui-même) ; `DaceUIAPI` est le service ajax des panneaux d'actions
+  que les applications hôtes consomment (collecter → rendre → exécuter
+  l'action postée → **rejouer** tout le panneau pour ne jamais montrer
+  un état périmé) ; la surcharge `request.ajax_api` est le moyen pour
+  un hôte de pointer les rappels du panneau vers son propre endpoint ;
+  les actions de départ virtuelles sont re-résolues depuis le triplet
+  (pd, nœud, behavior) ; un processus sans work-items compte comme
+  *bloqué* dans les tableaux de bord. L'orthographe historique
+  `action_infomrations` est conservée et documentée (la renommer est un
+  changement d'API de phase 3).

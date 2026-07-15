@@ -5,6 +5,15 @@
 # licence: AGPL
 # author: Amen Souissi
 
+"""The self-hosting console: five dace process definitions.
+
+All ``isUnique``, discriminator ``'DaceManager'``, Admin-only role
+validation; their ``automatic`` actions compose the console pages
+(pontus semantics): ``runtime_pd`` (running processes + dashboard),
+``pdc_pd`` (the definition container), ``pd_pd`` (one definition),
+``p_pd`` (one process: details, dashboard, data, actions to do),
+``activity_pd`` (assignments — the only writing actions).
+"""
 from pyramid.threadlocal import get_current_request
 
 from substanced.util import get_oid
@@ -32,23 +41,28 @@ from pontus.core import VisualisableElement
 
 
 def relation_validationA(process, context):
+    """Console guard: no relation constraint."""
     return True
 
 
 def roles_validationA(process, context):
+    """Console guard: Admin only."""
     return has_any_roles(roles=('Admin',))
 
 
 def processsecurity_validationA(process, context):
+    """Console guard: no process constraint."""
     return True
 
 
 def state_validationA(process, context):
+    """Console guard: no state constraint."""
     return True
 
 
 class StatisticProcesses(InfiniteCardinality):
 
+    """Console action: the runtime dashboard (url forces ``coordinates=main``)."""
     context = IRuntime
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -57,6 +71,7 @@ class StatisticProcesses(InfiniteCardinality):
     state_validation = state_validationA
 
     def url(self, obj):
+        """Action url with ``coordinates=main`` (and the action uid when persisted)."""
         query = {}
         try:
             actionuid = get_oid(self)
@@ -71,6 +86,7 @@ class StatisticProcesses(InfiniteCardinality):
 
 class SeeProcesses(InfiniteCardinality):
 
+    """Console action: the running-processes table."""
     context = IRuntime
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -81,6 +97,7 @@ class SeeProcesses(InfiniteCardinality):
 
 @process_definition(name='runtime_pd', id='runtime_pd')
 class RuntimeProcessDefinition(ProcessDefinition, VisualisableElement):
+    """The runtime console process (``runtime_pd``)."""
     isUnique = True
     discriminator = 'DaceManager'
 
@@ -116,6 +133,7 @@ class RuntimeProcessDefinition(ProcessDefinition, VisualisableElement):
 
 class SeeProcessesDef(InfiniteCardinality):
 
+    """Console action: the definitions catalogue."""
     context = IProcessDefinitionContainer
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -127,6 +145,7 @@ class SeeProcessesDef(InfiniteCardinality):
 
 @process_definition(name='pdc_pd', id='pdc_pd')
 class PDCProcessDefinition(ProcessDefinition, VisualisableElement):
+    """The definition-container console process (``pdc_pd``)."""
     isUnique = True
     discriminator = 'DaceManager'
 
@@ -152,6 +171,7 @@ class PDCProcessDefinition(ProcessDefinition, VisualisableElement):
 
 class SeeProcessDef(InfiniteCardinality):
 
+    """Console action: one definition, in detail."""
     context = IProcessDefinition
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -162,6 +182,7 @@ class SeeProcessDef(InfiniteCardinality):
 
 class StatisticProcessesDef(InfiniteCardinality):
 
+    """Console action: one definition, its dashboard."""
     context = IProcessDefinition
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -170,6 +191,7 @@ class StatisticProcessesDef(InfiniteCardinality):
     state_validation = state_validationA
 
     def url(self, obj):
+        """Action url with ``coordinates=main`` (and the action uid when persisted)."""
         query = {}
         try:
             actionuid = get_oid(self)
@@ -183,6 +205,7 @@ class StatisticProcessesDef(InfiniteCardinality):
 
 class InstanceProcessesDef(InfiniteCardinality):
 
+    """Console action: one definition, its running instances."""
     context = IProcessDefinition
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -193,6 +216,7 @@ class InstanceProcessesDef(InfiniteCardinality):
 
 @process_definition(name='pd_pd', id='pd_pd')
 class PDProcessDefinition(ProcessDefinition, VisualisableElement):
+    """The single-definition console process (``pd_pd``)."""
     isUnique = True
     discriminator = 'DaceManager'
 
@@ -236,6 +260,7 @@ class PDProcessDefinition(ProcessDefinition, VisualisableElement):
 
 class SeeProcess(InfiniteCardinality):
 
+    """Console action: one process, in detail."""
     context = IProcess
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -246,6 +271,7 @@ class SeeProcess(InfiniteCardinality):
 
 class StatisticProcess(InfiniteCardinality):
 
+    """Console action: one process, its dashboard."""
     context = IProcess
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -254,6 +280,7 @@ class StatisticProcess(InfiniteCardinality):
     state_validation = state_validationA
 
     def url(self, obj):
+        """Action url with ``coordinates=main`` (and the action uid when persisted)."""
         query = {}
         try:
             actionuid = get_oid(self)
@@ -268,6 +295,7 @@ class StatisticProcess(InfiniteCardinality):
 
 class SeeProcessDatas(InfiniteCardinality):
 
+    """Console action: the entities a process manipulates."""
     context = IProcess
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -277,6 +305,7 @@ class SeeProcessDatas(InfiniteCardinality):
 
 class DoActivitiesProcess(InfiniteCardinality):
 
+    """Console action: the pending actions of a process."""
     context = IProcess
     actionType = ActionType.automatic
     relation_validation = relation_validationA
@@ -287,6 +316,7 @@ class DoActivitiesProcess(InfiniteCardinality):
 
 @process_definition(name='p_pd', id='p_pd')
 class PProcessDefinition(ProcessDefinition, VisualisableElement):
+    """The single-process console process (``p_pd``)."""
     isUnique = True
     discriminator = 'DaceManager'
 
@@ -334,6 +364,7 @@ class PProcessDefinition(ProcessDefinition, VisualisableElement):
 
 class AssignToUsers(InfiniteCardinality):
 
+    """Writing action: replace the assignment of an activity."""
     isSequential = True
     context = IActivity
     relation_validation = relation_validationA
@@ -342,12 +373,14 @@ class AssignToUsers(InfiniteCardinality):
     state_validation = state_validationA
 
     def start(self, context, request, appstruct, **kw):
+        """Apply ``set_assignment`` with the posted users."""
         users = list(appstruct.pop('users'))
         context.set_assignment(users)
         return {}
 
 class AssignActionToUsers(InfiniteCardinality):
 
+    """Writing action: replace the assignment of a business action."""
     context = IBusinessAction
     relation_validation = relation_validationA
     roles_validation = roles_validationA
@@ -355,6 +388,7 @@ class AssignActionToUsers(InfiniteCardinality):
     state_validation = state_validationA
 
     def start(self, context, request, appstruct, **kw):
+        """Apply ``set_assignment`` with the posted users."""
         users = list(appstruct.pop('users'))
         context.set_assignment(users)
         return {}
@@ -362,6 +396,7 @@ class AssignActionToUsers(InfiniteCardinality):
 
 @process_definition(name='activity_pd', id='activity_pd')
 class ActivityProcessDefinition(ProcessDefinition, VisualisableElement):
+    """The assignment console process (``activity_pd``)."""
     isUnique = True
     discriminator = 'DaceManager'
 

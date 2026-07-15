@@ -5,6 +5,15 @@
 # licence: AGPL
 # author: Amen Souissi
 
+"""The console views, bound to the self-hosting processes.
+
+Paginated, sortable process tables; dygraph dashboards; the
+definitions grouped by discriminator (reusing pontus's NavBarPanel);
+the process cockpit (its definition's actions, the manipulated data
+of its execution context, its pending actions); the assignment
+forms. Ends with the explicit ``DEFAULTMAPPING_ACTIONS_VIEWS``
+registration.
+"""
 import colander
 from pyramid.threadlocal import get_current_registry
 from pyramid.view import view_config
@@ -49,6 +58,7 @@ from daceui.processes import (
     )
 class RuntimeView(BasicView):
 
+    """The running-processes table of the runtime."""
     title = 'Processes'
     template = 'daceui:templates/runtime_view.pt'
     name = 'Processes'
@@ -57,6 +67,7 @@ class RuntimeView(BasicView):
                     'js_links':['daceui:static/tablesorter-master/js/jquery.tablesorter.min.js']}
 
     def update(self):
+        """Render the paginated table via ``DaceUIAPI.update_processes``."""
         self.execute(None)
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
                                                         'dace_ui_api')
@@ -72,6 +83,7 @@ class RuntimeView(BasicView):
     )
 class ProcessStatisticView(BasicView):
 
+    """The runtime dashboard (tabs + dygraph histogram)."""
     title = 'Tableau de bord'
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     template = 'daceui:templates/runtimeprocesses_statistic_view.pt'
@@ -83,6 +95,7 @@ class ProcessStatisticView(BasicView):
                                  'daceui:static/dygraph/dygraph-combined.js' ]}
 
     def update(self):
+        """Assemble the three-tab stats and the creation dates."""
         self.execute(None)
         result = {}
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
@@ -105,6 +118,7 @@ class ProcessStatisticView(BasicView):
     )
 class ProcessDefinitionContainerView(BasicView):
 
+    """The definitions catalogue, grouped by discriminator."""
     title = 'Processes'
     template = 'daceui:templates/defcontainer_view.pt'
     name = 'ProcessesDef'
@@ -113,6 +127,7 @@ class ProcessDefinitionContainerView(BasicView):
                     'js_links':['daceui:static/tablesorter-master/js/jquery.tablesorter.min.js']}
 
     def _processes(self):
+        """Group the definitions by discriminator, each with its pontus navbar."""
         from pontus.panels import NavBarPanel
         processes = sorted(self.context.definitions, key=lambda p: p.__name__)
         allprocesses = {}
@@ -131,6 +146,7 @@ class ProcessDefinitionContainerView(BasicView):
         return allprocesses
 
     def update(self):
+        """Render the grouped catalogue."""
         self.execute(None)
         result = {}
         allprocessesdef = [{'title':k, 'processes':v} \
@@ -150,6 +166,7 @@ class ProcessDefinitionContainerView(BasicView):
     )
 class ProcessDefinitionStatisticView(BasicView):
 
+    """One definition's dashboard over its started processes."""
     title = 'Tableau de bord'
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     template = 'daceui:templates/processdef_statistic_view.pt'
@@ -161,6 +178,7 @@ class ProcessDefinitionStatisticView(BasicView):
                                  'daceui:static/dygraph/dygraph-combined.js' ]}
 
     def update(self):
+        """Assemble the stats of the started processes."""
         self.execute(None)
         result = {}
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
@@ -185,12 +203,14 @@ class ProcessDefinitionStatisticView(BasicView):
     )
 class ProcessDefinitionView(BasicView):
 
+    """One definition's details."""
     title = 'La definition du processus'
     template = 'daceui:templates/processdef_view.pt'
     name = 'ProcessDef'
     behaviors = [SeeProcessDef]
 
     def update(self):
+        """Render the definition page."""
         self.execute(None)
         result = {}
         values = {'processdef': self.context}
@@ -207,6 +227,7 @@ class ProcessDefinitionView(BasicView):
     )
 class ProcessesPDDefinitionView(BasicView):
 
+    """One definition's running instances (paginated)."""
     title = 'Les instance de la definition'
     template = 'daceui:templates/processinstances_view.pt'
     name = 'ProcessInst'
@@ -215,6 +236,7 @@ class ProcessesPDDefinitionView(BasicView):
                     'js_links':['daceui:static/tablesorter-master/js/jquery.tablesorter.min.js']}
 
     def _processes(self, tabid):
+        """Paginate the started processes of the definition."""
         processes = sorted(self.context.started_processes, 
                            key=lambda p: p.created_at)
         page, pages, processes = calculatePage(processes, self, tabid)
@@ -228,6 +250,7 @@ class ProcessesPDDefinitionView(BasicView):
         return page, pages, allprocesses
 
     def update(self):
+        """Render the paginated instance table."""
         self.execute(None)
         result = {}
         tabid = self.__class__.__name__+'AllProcesses'
@@ -253,6 +276,7 @@ class ProcessesPDDefinitionView(BasicView):
     )
 class ProcessView(BasicView):
 
+    """One process's details: the actions of its definition."""
     title = 'Les detail du processus'
     template = 'daceui:templates/process_view.pt'
     name = 'Process'
@@ -260,6 +284,7 @@ class ProcessView(BasicView):
 
 
     def update(self):
+        """Render the definition's action panel via ``DaceUIAPI``."""
         self.execute(None)
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
                                                         'dace_ui_api')
@@ -288,6 +313,7 @@ class ProcessView(BasicView):
     )
 class StatisticProcessView(BasicView):
 
+    """One process's dashboard (template only)."""
     title = 'Tableau de bord'
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     template = 'daceui:templates/processstatistic_view.pt'
@@ -296,6 +322,7 @@ class StatisticProcessView(BasicView):
     behaviors = [StatisticProcess]
 
     def update(self):
+        """Render the dashboard shell."""
         self.execute(None)
         result = {}
         values = {}
@@ -312,6 +339,7 @@ class StatisticProcessView(BasicView):
     )
 class ProcessDataView(BasicView):
 
+    """The entities a process manipulates (current vs history)."""
     title = 'Les donnees manipulees'
     template = 'daceui:templates/processdatas_view.pt'
     name = 'lesdonneesmanipulees'
@@ -320,6 +348,9 @@ class ProcessDataView(BasicView):
                     'js_links':['daceui:static/tablesorter-master/js/jquery.tablesorter.min.js']}
 
     def _datas(self, involveds):
+        """Flatten ``all_classified_involveds`` into display rows (creator,
+        collection, relation name, index, currency).
+        """
         alldatas = []
         for pname, inv in involveds.items():
             name = pname
@@ -347,6 +378,7 @@ class ProcessDataView(BasicView):
 
 
     def update(self):
+        """Render current and historical involveds."""
         self.execute(None)
         result = {}
         all_involveds = self._datas(
@@ -371,6 +403,7 @@ class ProcessDataView(BasicView):
     )
 class DoActivitiesProcessView(BasicView):
 
+    """The pending actions over the active involveds of the process."""
     title = 'Les actions a realiser'
     template = 'daceui:templates/processactions_view.pt'
     name = 'actionsrealiser'
@@ -379,6 +412,7 @@ class DoActivitiesProcessView(BasicView):
                     'js_links':['daceui:static/tablesorter-master/js/jquery.tablesorter.min.js']}
 
     def update(self):
+        """Collect and render the action panel of the active involveds."""
         self.execute(None)
         involveds = self.context.execution_context.all_active_involveds().values()
         involveds = [e['entities'] for e in involveds]
@@ -407,12 +441,14 @@ class DoActivitiesProcessView(BasicView):
 
 @colander.deferred
 def defaultusers(node, kw):
+    """Deferred: pre-select the current assignees."""
     context = node.bindings['context']
     return  context.assigned_to
 
 
 @colander.deferred
 def listchoice(node, kw):
+    """Deferred: a Select2 over the site users."""
     values = []
     prop = getSite()['principals']['users'].values()
     values = [(i, i.__name__) for i in prop]
@@ -421,6 +457,7 @@ def listchoice(node, kw):
 
 class AssignToUsersViewSchema(Schema):
 
+        """The user-selection schema of the assignment forms."""
         users = colander.SchemaNode(
                 colander.Set(),
                 widget=listchoice,
@@ -437,6 +474,7 @@ class AssignToUsersViewSchema(Schema):
     )
 class AssignToUsersView(FormView):
 
+    """Assign an activity (form)."""
     title = 'Assigner l\'activitee'
     schema = AssignToUsersViewSchema()
     formid = 'assign_activity_form'
@@ -445,11 +483,13 @@ class AssignToUsersView(FormView):
 
 
 class AssignedUsersView(BasicView):
+    """The current assignees of an action (list)."""
     title = 'Les utilisateurs assignies'
     name = 'assigned_users'
     template = 'daceui:templates/assigned_users.pt'
 
     def update(self):
+        """Render the assignee list."""
         assigned_to = sorted(self.context.assigned_to, 
                              key=lambda u: u.__name__)
         users = []
@@ -470,6 +510,7 @@ class AssignedUsersView(BasicView):
 
 class AssignActionToUsersView(FormView):
 
+    """Assign a business action (form)."""
     title = 'Assigner l\'action'
     name = 'assign_action_form'
     formid = 'assigne_action_form'
@@ -484,6 +525,7 @@ class AssignActionToUsersView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class AssignActionToUsersMultipleView(MultipleView):
+    """Assignees + assignment form, as one view."""
     title = 'Assigner l\'action'
     name = 'assign_action'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

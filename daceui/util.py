@@ -3,6 +3,15 @@
 
 # licence: AGPL
 # author: Amen Souissi
+"""The action-panel engine and the process dashboards.
+
+``DaceUIAPI`` (the ``dace_ui_api`` utility) collects the applicable
+actions of a set of contexts, renders each action's view body,
+executes the one targeted by the POST and *replays* the whole panel
+afterwards — the service behind every action panel of nova-ideo.
+``DaceUIAPIJson`` is its xhr endpoint (``@@dace-ui-api-view``,
+``op=update_action|after_execution_action``).
+"""
 import datetime
 from math import ceil
 import json
@@ -29,6 +38,9 @@ except NameError:
 
 
 def calculatePage(elements, view, tabid):
+    """Paginate ``elements`` from the ``page<tabid>``/``number<tabid>``
+    request params (7 per page by default); return (page, pages, slice).
+    """
     page = view.params('page'+tabid)
     number = view.params('number'+tabid)
     if number is None:
@@ -56,6 +68,7 @@ def calculatePage(elements, view, tabid):
 @implementer(IDaceUIAPI)
 class DaceUIAPI(object):
 
+    """The action-panel service (see module docstring)."""
     def get_actions(self,
                     contexts,
                     request,
@@ -63,6 +76,9 @@ class DaceUIAPI(object):
                     action_id=None,
                     process_discriminator=None,
                     isautomatic=False):
+        """Collect ``(context, action)`` pairs via ``getAllBusinessAction``,
+        optionally narrowed to a process id or to one process *instance*.
+        """
         all_actions = []
         process_id = None
         process = None
@@ -94,6 +110,15 @@ class DaceUIAPI(object):
                      form_id,
                      ignor_actionsofactions=True,
                      include_resources=True):
+        """The panel round-trip: per action, instantiate the mapped view bound
+        to that single action; run the one whose id matches ``form_id``
+        (collect only the requirements of the others); short-circuit
+        ``(True, ...)`` when the run view finished successfully (replay
+        needed); otherwise assemble the ``allbodies_actions`` entries
+        (JSON body, composed id, ajax urls, assignees) and the merged,
+        deduplicated resources. Recurses into the actions of actions when
+        ``ignor_actionsofactions`` is false.
+        """
         action_updated = False
         resources = {}
         resources['js_links'] = []
@@ -210,6 +235,13 @@ class DaceUIAPI(object):
         ignor_form=False,
         ignor_actionsofactions=True,
         include_resources=True):
+        """Drive ``_ajax_views`` with the posted ``__formid__``; on a
+        successful execution, clear the POST, re-validate every action
+        (dropping detached contexts) and replay so the returned bodies
+        reflect the post-execution state; a valid form id that updated
+        nothing yields the "Action non realisee" error (right lost or dace
+        lock held). Returns (updated, messages, resources, bodies).
+        """
         messages = {}
         #find all business actions
         form_id = None
@@ -264,6 +296,11 @@ class DaceUIAPI(object):
         return action_updated, messages, resources, allbodies_actions
 
     def action_infomrations(self, action, context, request=None, **args):
+        """The panel entry of one action: composed id
+        (``behavior_id + action_oid + '_' + context_oid``) and the two ajax
+        urls — start actions are addressed by the (pd, node, behavior)
+        triple. Historical spelling kept: renaming is a Phase-3 API change.
+        """
         action_id = action.behavior_id
         view_title = action.title
         view = DEFAULTMAPPING_ACTIONS_VIEWS.get(action._class_, None)
@@ -314,6 +351,7 @@ class DaceUIAPI(object):
         return informations
 
     def afterexecution_viewurl(self, request=None, **args):
+        """The ``op=after_execution_action`` url (honours ``request.ajax_api``)."""
         if request is None:
             request = get_current_request()
 
@@ -324,6 +362,7 @@ class DaceUIAPI(object):
             query=args)
 
     def updateaction_viewurl(self, request=None, **args):
+        """The ``op=update_action`` url (honours ``request.ajax_api``)."""
         if request is None:
             request = get_current_request()
 
@@ -334,6 +373,7 @@ class DaceUIAPI(object):
             query=args)
 
     def _processes(self, view, processes):
+        """Classify processes: running / blocked (no work-items) / finished."""
         allprocesses = []
         nb_encours = 0
         nb_bloque = 0
@@ -355,6 +395,7 @@ class DaceUIAPI(object):
         return nb_encours, nb_bloque, nb_termine, allprocesses
 
     def update_processes(self, view, processes, tabid):
+        """The paginated, classified process table of ``view`` (one tab)."""
         result = {}
         processes = sorted(processes, key=lambda p: p.created_at)
         page, pages, processes = calculatePage(processes, view, tabid)
@@ -374,6 +415,7 @@ class DaceUIAPI(object):
         return result
 
     def statistic_processes(self, view, processes, tabid):
+        """The three-tab dashboard (running/blocked/finished) of ``processes``."""
         nb_encours, nb_bloque, \
         nb_termine, allprocesses =  self._processes(view, processes)
 
@@ -408,6 +450,7 @@ class DaceUIAPI(object):
         return values
 
     def statistic_dates(self, view, processes):
+        """Creation histogram (minute buckets) for the dygraph chart."""
         dates = {}
         for process in processes:
             created_at = process.created_at
@@ -426,6 +469,9 @@ class DaceUIAPI(object):
         self, context, request, action,
         add_action_discriminator=False, unwrap=True,
         include_resources=False):
+        """Render one action's view (unwrapped by default — the modal/inline
+        case), optionally with its resources.
+        """
         body = ''
         resources = {
             'css_links': [],
@@ -460,7 +506,12 @@ class DaceUIAPI(object):
              renderer='json')
 class DaceUIAPIJson(BasicView):
 
+    """The xhr endpoint: dispatch on the ``op`` request parameter."""
     def _get_start_action(self):
+        """Recompute a *virtual* start action from ``pd_id``/``action_id``/
+        ``behavior_id`` through ``pd.start_process`` (start actions have no
+        oid to resolve).
+        """
         action = None
         pd_id = self.params('pd_id')
         action_id = self.params('action_id')
@@ -476,6 +527,7 @@ class DaceUIAPIJson(BasicView):
         return action
 
     def update_action(self, action=None, context=None):
+        """Return the rendered body of the (resolved or start) action."""
         result = {}
         action_uid = self.params('action_uid')
         try:
@@ -500,6 +552,7 @@ class DaceUIAPIJson(BasicView):
         return result
 
     def after_execution_action(self):
+        """Validate then ``after_execution`` (unlock) — the abandon callback."""
         action_uid = self.params('action_uid')
         context_uid = self.params('context_uid')
         action = None
@@ -526,6 +579,7 @@ class DaceUIAPIJson(BasicView):
 
     #autres operations
     def __call__(self):
+        """Dispatch to the method named by ``op``."""
         operation_name = self.params('op')
         if operation_name is not None:
             operation = getattr(self, operation_name, None)
