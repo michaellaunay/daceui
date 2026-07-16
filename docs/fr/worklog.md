@@ -71,3 +71,31 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   *bloqué* dans les tableaux de bord. L'orthographe historique
   `action_infomrations` est conservée et documentée (la renommer est un
   changement d'API de phase 3).
+
+
+## 16/07/2026 — Phase 3 / M3
+
+- **daceui est vert sur Python 3.12 : 6 tests, 0 échec, 0 erreur — et
+  ce sont ses tout premiers tests** (la CI historique ne faisait qu'un
+  smoke d'import). La suite est de niveau smoke mais de bout en bout :
+  les cinq définitions DaceManager de la console s'enregistrent,
+  l'utilitaire ``dace_ui_api`` se résout, ``calculatePage`` pagine,
+  ``update_actions`` rend un panneau complet (collecter → rendre →
+  assembler), la surcharge ``request.ajax_api`` re-pointe les URL de
+  rappel, et un test HTTP se connecte à la SDI et rend
+  ``/runtime/@@index`` — la console auto-hébergée vivante sur
+  Chameleon 4.
+- **Zéro modification du code du paquet** : le portage n'a demandé que
+  le harnais et les tests. La propreté de la phase 2 plus le socle
+  M1/M2 (réacteur asyncio, shims deform 3, ``tm.annotate_user``) ont
+  porté daceui par héritage.
+- Une leçon pour les hôtes (note M4) : pontus et daceui déclarent
+  chacun un layout pyramid_layout *par défaut* — inclusions sœurs à
+  égalité, pyramid lève ``ConfigurationConflictError`` ; l'application
+  doit enregistrer son propre layout pour posséder l'arbitrage,
+  exactement comme nova-ideo le fait.
+- Emballage bi-pile calqué sur M1/M2 : `constraints-modern.txt`, tox
+  `py312`, job CI `py312-tests` (dace et pontus installés depuis git
+  d'abord), job legacy épinglé sur `legacy-golden-master`, extra
+  `test` (WebTest), version 2.0.0.dev0. Le buildout de KuneAgi
+  épingle déjà daceui au SHA certifié.

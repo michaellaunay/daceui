@@ -20,13 +20,13 @@ requires = [
     ]
 
 setup(name='ecreall_daceui',
-      version='1.0.5.dev0',
+      version='2.0.0.dev0',
       description='This the reusable ui parts for DaCE.',
       long_description=README + '\n\n' + CHANGES,
       long_description_content_type='text/markdown',
       classifiers=[
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.12",
         "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
@@ -47,6 +47,10 @@ setup(name='ecreall_daceui',
       include_package_data=True,
       zip_safe=False,
       install_requires=requires,
+      extras_require=dict(
+          # the Phase 3 / M3 test suite drives the app over HTTP
+          test=['WebTest'],
+      ),
       tests_require=requires,
       test_suite="daceui",
       message_extractors={

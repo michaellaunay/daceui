@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+### Phase 3 / M3 — 2026-07-16 (Python 3.12)
+
+- Python 3.12 support on the modern stack (dace 2.0.0.dev0, pontus
+  2.0.0.dev0, substanced 1.0b1, Chameleon 4.6) — **with daceui's first
+  test suite**: six functional tests (the five DaceManager console
+  definitions, the ``dace_ui_api`` utility, ``calculatePage``, the full
+  ``update_actions`` panel rendering, the ``request.ajax_api`` override,
+  and an HTTP end-to-end on the runtime index). 6/6 green; see
+  `constraints-modern.txt`. **No change to the package code itself.**
+- Harness lesson for hosts: pontus and daceui both declare a *default*
+  pyramid_layout; sibling includes tie, so the application must own the
+  tie-break by registering its own layout (nova-ideo already does).
+- Version bumped to 2.0.0.dev0; a ``test`` extra (WebTest) added.
+  Python 3.6 support moves to the ``legacy-golden-master`` tag.
+
+
 ### Fork maintenance — 2026-07-13 (`michaellaunay/daceui`)
 
 - Repository forked from `ecreall/daceui`; maintenance resumed by Michaël Launay (Logikascium). Ecréall's intellectual property was acquired by Logikascium in 2024; license unchanged (AGPL v3+).

@@ -66,3 +66,29 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   (pd, node, behavior) triple; a process without work-items counts as
   *blocked* in the dashboards. The historical `action_infomrations`
   spelling is kept and documented (renaming is a Phase-3 API change).
+
+
+## 2026-07-16 — Phase 3 / M3
+
+- **daceui is green on Python 3.12: 6 tests, 0 failures, 0 errors —
+  and they are its first tests ever** (the historical CI only
+  import-smoked). The suite is smoke-level but end to end: the five
+  DaceManager console definitions register, the ``dace_ui_api``
+  utility resolves, ``calculatePage`` paginates, ``update_actions``
+  renders a full panel (collect → render → assemble), the
+  ``request.ajax_api`` override re-points the callback URLs, and an
+  HTTP test logs into the SDI and renders ``/runtime/@@index`` — the
+  self-hosting console alive on Chameleon 4.
+- **Zero changes to the package code**: the port needed only the
+  harness and the tests. Phase-2 cleanliness plus the M1/M2 groundwork
+  (asyncio reactor, deform-3 shims, ``tm.annotate_user``) carried
+  daceui by inheritance.
+- One lesson for hosts (M4 note): pontus and daceui both declare a
+  *default* pyramid_layout — sibling includes tie and pyramid raises a
+  ``ConfigurationConflictError``; the application must register its
+  own layout to own the tie-break, exactly as nova-ideo does.
+- Dual-stack packaging mirrored from M1/M2: `constraints-modern.txt`,
+  tox `py312`, CI `py312-tests` job (dace and pontus installed from
+  git first), legacy job pinned to `legacy-golden-master`, a `test`
+  extra (WebTest), version 2.0.0.dev0. KuneAgi's buildout already pins
+  daceui at the certified SHA.
