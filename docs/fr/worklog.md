@@ -99,3 +99,11 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   d'abord), job legacy épinglé sur `legacy-golden-master`, extra
   `test` (WebTest), version 2.0.0.dev0. Le buildout de KuneAgi
   épingle déjà daceui au SHA certifié.
+
+- Correctif attrapé par la CI : l'ajout M3 d'`extras_require`
+  doublonnait le mot-clé préexistant de `setup.py` — une `SyntaxError`
+  au build que la vérification du jalon avait manquée, `compileall`
+  couvrant le paquet mais pas le `setup.py` à la racine. Fusion en un
+  extra unique (`test=['WebTest']` ; la couche robot historique
+  `pyramid_robot` est inutilisée par la suite). Règle de vérification
+  étendue : `setup.py` lui-même est compilé.

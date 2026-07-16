@@ -47,10 +47,6 @@ setup(name='ecreall_daceui',
       include_package_data=True,
       zip_safe=False,
       install_requires=requires,
-      extras_require=dict(
-          # the Phase 3 / M3 test suite drives the app over HTTP
-          test=['WebTest'],
-      ),
       tests_require=requires,
       test_suite="daceui",
       message_extractors={
@@ -59,8 +55,11 @@ setup(name='ecreall_daceui',
               ('**.pt', 'chameleon', None),
           ],
       },
-      extras_require = dict(
-          test=['pyramid_robot'],
+      extras_require=dict(
+          # 'pyramid_robot' (the historical robot layer) is unused by
+          # the suite; the Phase 3 / M3 functional tests drive the app
+          # over HTTP:
+          test=['WebTest'],
       ),
       entry_points="""\
       [paste.app_factory]

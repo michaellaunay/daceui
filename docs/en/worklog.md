@@ -92,3 +92,11 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   git first), legacy job pinned to `legacy-golden-master`, a `test`
   extra (WebTest), version 2.0.0.dev0. KuneAgi's buildout already pins
   daceui at the certified SHA.
+
+- CI-caught fixup: the M3 `extras_require` addition duplicated the
+  pre-existing keyword in `setup.py` — a build-time `SyntaxError` the
+  milestone verification missed because `compileall` covered the
+  package, not the repo-root `setup.py`. Merged into a single extra
+  (`test=['WebTest']`; the historical `pyramid_robot` robot layer is
+  unused by the suite). Verification rule extended: `setup.py` itself
+  is compiled.
