@@ -82,3 +82,14 @@ Two behaviours worth naming:
 | the ajax endpoint | `util.py` (`DaceUIAPIJson`) |
 | the self-hosting console | `processes.py`, then `views.py` |
 | pagination & dashboards | `util.py` (`calculatePage`, `update_processes`, `statistic_*`) |
+
+## The test harness (phase 3 / M3, 2026-07)
+
+`daceui/testing.py` builds a real application (substanced + dace +
+pontus + daceui) for functional tests — the library's first suite:
+the five `DaceManager` process definitions, the `dace_ui_api`
+utility, `calculatePage`, a full `update_actions` panel render, the
+`request.ajax_api` override, and an end-to-end HTTP check (SDI login
+then `/runtime/@@index`) on Chameleon 4. Lesson worth keeping: pontus
+and daceui each declare a default layout — the APPLICATION must
+register its own (nova-ideo already does).

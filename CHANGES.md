@@ -1,6 +1,12 @@
 # Changelog
 
 ## Unreleased
+### Fix — 2026-07-16
+- `setup.py`: the M3 `extras_require` addition duplicated the
+  historical keyword (a build-time `SyntaxError`, caught by the CI of
+  the downstream KuneAgi install); merged into a single
+  `test=['WebTest']` extra.
+
 
 ### Phase 3 / M3 — 2026-07-16 (Python 3.12)
 

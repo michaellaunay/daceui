@@ -100,3 +100,8 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   (`test=['WebTest']`; the historical `pyramid_robot` robot layer is
   unused by the suite). Verification rule extended: `setup.py` itself
   is compiled.
+
+- **Documentation refresh.** README states the dual-stack reality and
+  the first-ever suite; CHANGES gains the `extras_require` fix entry;
+  architecture gains the test-harness section (and the default-layout
+  lesson).

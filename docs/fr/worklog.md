@@ -107,3 +107,8 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   extra unique (`test=['WebTest']` ; la couche robot historique
   `pyramid_robot` est inutilisée par la suite). Règle de vérification
   étendue : `setup.py` lui-même est compilé.
+
+- **Rafraîchissement documentaire.** Le README énonce la réalité
+  bi-pile et la toute première suite ; CHANGES gagne l'entrée du
+  correctif `extras_require` ; l'architecture gagne la section du
+  harnais de tests (et la leçon du layout par défaut).

@@ -8,7 +8,13 @@ The repository also ships a minimal standalone Pyramid application (`paste.app_f
 
 This repository is a **maintained fork** of [`ecreall/daceui`](https://github.com/ecreall/daceui) (original development by Ecréall, 2014–2018), forked in July 2026 and maintained by Michaël Launay ([Logikascium](https://github.com/michaellaunay)). Ecréall's intellectual property was acquired by Logikascium in 2024; the license is unchanged: **AGPL v3+**.
 
-This fork is part of the modernisation effort of the [Nova-Ideo](https://github.com/ecreall/nova-ideo) / [KuneAgi](https://github.com/ecreall/KuneAgi) participatory-innovation platform. The `master` branch currently reflects the **legacy state** of the library (Python 3.6-era stack); see the [roadmap](#roadmap--planned-updates) below and `CHANGES.md`.
+This fork is part of the modernisation effort of the [Nova-Ideo](https://github.com/ecreall/nova-ideo) / [KuneAgi](https://github.com/ecreall/KuneAgi) participatory-innovation platform. The `master` branch is **dual-stack**: the library runs on the
+certified legacy stack (tag `legacy-golden-master`) and on
+**Python 3.12** (phase 3 / M3) — with its FIRST test suite ever
+(6 functional tests, from the DaceManager definitions to an end-to-end
+HTTP render; the historical CI only smoke-imported). See `CHANGES.md`
+and the testing section of
+[`docs/en/architecture.md`](docs/en/architecture.md).
 
 ## Current requirements (legacy)
 
