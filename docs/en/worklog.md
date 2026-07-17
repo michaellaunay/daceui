@@ -121,3 +121,6 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   unguarded — a start action recomputed from a valid triple resolves,
   its view refuses, and pontus surfaces HTTPInternalServerError; the
   `action_uid` path renders the body.
+
+- **Documentation pause.** README carries the 14-test reality and the
+  coverage figures; CHANGES gains the consolidated T3 entry.

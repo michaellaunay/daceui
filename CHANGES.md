@@ -1,6 +1,18 @@
 # Changelog
 
 ## Unreleased
+### T3 — 2026-07-17
+- The suite grows from 6 to 14 tests (coverage 67 % → 81 %;
+  `util.py` 56 % → 76 %, `views.py` 54 % → 72 %). Pinned: the five
+  definition-side console views (markers, including the historical
+  `panel-RutimeStat` template id); `action_infomrations` under both
+  faces (START branch on a fresh app, OID branch once a console
+  render instantiates the actions); `get_action_body` (layout
+  Structure, resources variant); `statistic_dates` (minute buckets);
+  and the JSON endpoint's ASYMMETRIC error contract (guarded
+  resolutions answer `{}`, unguarded rendering surfaces
+  `HTTPInternalServerError`).
+
 ### Fix — 2026-07-16
 - `setup.py`: the M3 `extras_require` addition duplicated the
   historical keyword (a build-time `SyntaxError`, caught by the CI of

@@ -130,3 +130,6 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   recalculée d'un triplet valide résout, sa vue refuse, et pontus fait
   surface en HTTPInternalServerError ; le chemin `action_uid` rend le
   corps.
+
+- **Pause documentaire.** Le README porte la réalité des 14 tests et
+  les chiffres de couverture ; CHANGES gagne l'entrée T3 consolidée.

@@ -11,8 +11,10 @@ This repository is a **maintained fork** of [`ecreall/daceui`](https://github.co
 This fork is part of the modernisation effort of the [Nova-Ideo](https://github.com/ecreall/nova-ideo) / [KuneAgi](https://github.com/ecreall/KuneAgi) participatory-innovation platform. The `master` branch is **dual-stack**: the library runs on the
 certified legacy stack (tag `legacy-golden-master`) and on
 **Python 3.12** (phase 3 / M3) — with its FIRST test suite ever
-(6 functional tests, from the DaceManager definitions to an end-to-end
-HTTP render; the historical CI only smoke-imported). See `CHANGES.md`
+(14 functional tests: from the DaceManager definitions to an
+end-to-end HTTP render, plus the console views and the JSON endpoint;
+the historical CI only smoke-imported). Coverage: `util.py` 76 %,
+`views.py` 72 %, package total **81 %**. See `CHANGES.md`
 and the testing section of
 [`docs/en/architecture.md`](docs/en/architecture.md).
 
