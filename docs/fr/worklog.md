@@ -112,3 +112,21 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   bi-pile et la toute première suite ; CHANGES gagne l'entrée du
   correctif `extras_require` ; l'architecture gagne la section du
   harnais de tests (et la leçon du layout par défaut).
+
+- **T3 : les vues console et l'endpoint JSON sont épinglés** — 8 tests
+  sur le harnais M3. Couverture : util.py **56 % → 76 %**, views.py
+  **54 % → 72 %**, total daceui **67 % → 81 %** ; suite 14/14.
+  Épinglés : les cinq vues console côté définitions rendent
+  (marqueurs, dont l'identifiant de template historique
+  `panel-RutimeStat`) ; `action_infomrations` sous ses deux visages
+  (app fraîche : actions sans oid → branche START, urls adressées par
+  le triplet (pd, nœud, behavior) ; après qu'un rendu console les a
+  instanciées → branche OID, urls par `action_uid`) ;
+  `get_action_body` répond une Structure de layout non vide (variante
+  ressources incluse) ; `statistic_dates` agrège à la minute. Le
+  contrat d'erreur ASYMÉTRIQUE de l'endpoint JSON est épinglé : les
+  chemins de résolution gardés répondent `{}` (op absent/inconnu,
+  uids bidons), mais le rendu ne l'est pas — une action start
+  recalculée d'un triplet valide résout, sa vue refuse, et pontus fait
+  surface en HTTPInternalServerError ; le chemin `action_uid` rend le
+  corps.

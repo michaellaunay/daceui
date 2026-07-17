@@ -105,3 +105,19 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   the first-ever suite; CHANGES gains the `extras_require` fix entry;
   architecture gains the test-harness section (and the default-layout
   lesson).
+
+- **T3: the console views and the JSON endpoint are pinned** — 8 tests
+  on the M3 harness. Coverage: util.py **56 % → 76 %**, views.py
+  **54 % → 72 %**, daceui total **67 % → 81 %**; suite 14/14. Pinned:
+  the five definition-side console views render (markers, including
+  the historical `panel-RutimeStat` template id); `action_infomrations`
+  under both faces (fresh app: oid-less actions → START branch, urls
+  addressed by the (pd, node, behavior) triple; after a console render
+  instantiates them → OID branch, urls by `action_uid`);
+  `get_action_body` answers a truthy layout Structure (resources
+  variant included); `statistic_dates` buckets by minute. The JSON
+  endpoint's ASYMMETRIC error contract is pinned: guarded resolution
+  paths answer `{}` (missing/unknown op, bogus uids), but rendering is
+  unguarded — a start action recomputed from a valid triple resolves,
+  its view refuses, and pontus surfaces HTTPInternalServerError; the
+  `action_uid` path renders the body.
