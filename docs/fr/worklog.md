@@ -133,3 +133,9 @@ English version: [`../en/worklog.md`](../en/worklog.md).
 
 - **Pause documentaire.** Le README porte la réalité des 14 tests et
   les chiffres de couverture ; CHANGES gagne l'entrée T3 consolidée.
+
+- **Fenêtre des renommages.** `action_infomrations` →
+  `action_informations` (méthode — rien de persisté ; la coquille
+  demeure en alias de compatibilité, gardé par un test) et
+  `panel-RutimeStat` → `panel-RuntimeStat` dans les deux gabarits de
+  statistiques ; les tests T3 retournés en conséquence.

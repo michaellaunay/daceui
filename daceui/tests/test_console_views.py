@@ -9,8 +9,9 @@
 Characterisation on the M3 harness. Pinned contracts:
 
 - the five definition-side console views render (markers pinned —
-  including the historical ``panel-RutimeStat`` template id);
-- ``action_infomrations`` has two faces, both pinned: on a FRESH app
+  the ``panel-RuntimeStat`` template id, renamed 2026-07-17 from its
+  historical typo);
+- ``action_informations`` (renamed 2026-07-17; the typo alias is kept) has two faces, both pinned: on a FRESH app
   the console actions are oid-less and the START branch answers
   (``behavior_id + 'start_' + context_oid``, urls addressed by the
   ``(pd_id, action_id, behavior_id)`` triple); rendering a console
@@ -63,9 +64,9 @@ class TestConsoleViews(FunctionalTests):
              'contenteditable'),
             (views.ProcessDefinitionView, definition,
              '<dt>Description</dt>'),
-            # the template id carries its historical typo
+            # renamed 2026-07-17 from the historical typo
             (views.ProcessDefinitionStatisticView, definition,
-             'panel-RutimeStat'),
+             'panel-RuntimeStat'),
             (views.ProcessesPDDefinitionView, definition, 'alert'),
         )
         for view_class, context, marker in expectations:
@@ -75,10 +76,14 @@ class TestConsoleViews(FunctionalTests):
             body = result['coordinates'][view.coordinates][0]['body']
             self.assertIn(marker, body, view_class.__name__)
 
-    def test_action_infomrations_start_branch(self):
+    def test_action_informations_start_branch(self):
+        # the historical typo stays importable
+        from daceui.util import DaceUIAPI
+        self.assertIs(DaceUIAPI.action_infomrations,
+                      DaceUIAPI.action_informations)
         # fresh app: the console actions are oid-less — START branch
         context, action = self._first_action()
-        infos = self._api().action_infomrations(
+        infos = self._api().action_informations(
             action, context, request=self.request)
         self.assertEqual(
             sorted(infos),
@@ -100,7 +105,7 @@ class TestConsoleViews(FunctionalTests):
             self.assertIn('context_uid=' + context_oid, url)
             self.assertNotIn('action_uid=', url)
 
-    def test_action_infomrations_oid_branch(self):
+    def test_action_informations_oid_branch(self):
         # rendering a console view instantiates the actions
         from daceui import views
         runtime = self.app['runtime']
@@ -108,7 +113,7 @@ class TestConsoleViews(FunctionalTests):
         context, action = self._first_action()
         action_oid = str(get_oid(action))
         context_oid = str(get_oid(context))
-        infos = self._api().action_infomrations(
+        infos = self._api().action_informations(
             action, context, request=self.request)
         self.assertEqual(
             infos['action_id'],

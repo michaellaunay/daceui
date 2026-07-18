@@ -124,3 +124,9 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
 
 - **Documentation pause.** README carries the 14-test reality and the
   coverage figures; CHANGES gains the consolidated T3 entry.
+
+- **Rename window.** `action_infomrations` → `action_informations`
+  (method — nothing persisted; the typo stays as a compatibility
+  alias, guarded by a test) and `panel-RutimeStat` →
+  `panel-RuntimeStat` in both statistic templates; the T3 tests were
+  flipped accordingly.

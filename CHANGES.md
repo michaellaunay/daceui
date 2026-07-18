@@ -1,6 +1,13 @@
 # Changelog
 
 ## Unreleased
+### Rename — 2026-07-17
+- ``DaceUIAPI.action_infomrations`` becomes ``action_informations``
+  (a method — nothing persisted); the historical name stays as a
+  backward-compatibility alias. The ``panel-RutimeStat`` template id
+  becomes ``panel-RuntimeStat`` in both statistic templates. The T3
+  tests were flipped accordingly and guard the alias.
+
 ### T3 — 2026-07-17
 - The suite grows from 6 to 14 tests (coverage 67 % → 81 %;
   `util.py` 56 % → 76 %, `views.py` 54 % → 72 %). Pinned: the five

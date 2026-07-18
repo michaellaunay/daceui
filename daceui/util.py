@@ -199,7 +199,7 @@ class DaceUIAPI(object):
                         view_instance.coordinates, None)
 
                 action_infos.update(
-                    self.action_infomrations(action=action,
+                    self.action_informations(action=action,
                                              context=context,
                                              request=request))
                 action_infos.update({
@@ -295,7 +295,7 @@ class DaceUIAPI(object):
 
         return action_updated, messages, resources, allbodies_actions
 
-    def action_infomrations(self, action, context, request=None, **args):
+    def action_informations(self, action, context, request=None, **args):
         """The panel entry of one action: composed id
         (``behavior_id + action_oid + '_' + context_oid``) and the two ajax
         urls — start actions are addressed by the (pd, node, behavior)
@@ -464,6 +464,9 @@ class DaceUIAPI(object):
 
         dates = sorted(dates.items(), key=lambda i: i[0])
         return dates
+
+    # Backward-compatibility alias (historical typo, renamed 2026-07-17)
+    action_infomrations = action_informations
 
     def get_action_body(
         self, context, request, action,

@@ -1,7 +1,7 @@
-    <div id="panel-RutimeStat" class="panel-group">
+    <div id="panel-RuntimeStat" class="panel-group">
       <div class="panel panel-primary">
 	 <div class="panel-heading">
-	   <a  href="#panel-element-numbers" data-parent="#panel-RutimeStat" data-toggle="collapse" class="panel-title" style="font-size: 12px; color:#FFFFFF">
+	   <a  href="#panel-element-numbers" data-parent="#panel-RuntimeStat" data-toggle="collapse" class="panel-title" style="font-size: 12px; color:#FFFFFF">
               <i class="glyphicon glyphicon-stats"></i> Nombre des processus dans l'application <span class="badge pull">${bloque+termine+encours}</span>
 	   </a>
 	 </div>
@@ -56,7 +56,7 @@
       </div>
       <div class="panel panel-primary" >
 	 <div class="panel-heading">
-	   <a  href="#panel-element-piechart" data-parent="#panel-RutimeStat" data-toggle="collapse" class="panel-title" style="font-size: 12px; color:#FFFFFF" >
+	   <a  href="#panel-element-piechart" data-parent="#panel-RuntimeStat" data-toggle="collapse" class="panel-title" style="font-size: 12px; color:#FFFFFF" >
               <i class="glyphicon glyphicon-stats"></i> Pourcentage de l'activité des processus
 	   </a>
 	 </div>
@@ -115,7 +115,7 @@
       </div>
       <div class="panel panel-primary">
 	 <div class="panel-heading">
-	   <a  href="#panel-element-evolution" data-parent="#panel-RutimeStat" data-toggle="collapse" class="panel-title" style="font-size: 12px; color:#FFFFFF">
+	   <a  href="#panel-element-evolution" data-parent="#panel-RuntimeStat" data-toggle="collapse" class="panel-title" style="font-size: 12px; color:#FFFFFF">
              <i class="glyphicon glyphicon-stats"></i> Évolution du contenu dans le temps
 	   </a>
 	 </div>
